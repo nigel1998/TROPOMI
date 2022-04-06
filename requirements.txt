@@ -1,6 +1,6 @@
 pandas
+hydralit
 numpy
 streamlit
 plotly
-hydralit
 dropbox
