@@ -153,6 +153,9 @@ def DailyTROPOMINO2():
         file_stream = response['Body']
         img = pil.Image.open(file_stream)
         col12.image(img, use_column_width= True, caption = f"TROPOMI NO2 {daily_input} {date}")
+    col12.markdown("<ul style='text-align: justify; font-size:13px'>The <a href= 'tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the Air Climate and Health Lab at the Milken Institute School of Public Health at George Washington University (<a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>https://blogs.gwu.edu/sanenberg/</a>), and is not directly affiliated with Tropomi Science Team.", unsafe_allow_html=True)
+    col12.markdown("<ul style='text-align: justify; font-size:13px'>Data shown on the website are tropospheric vertical column amounts. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by KNMI (<a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>https://amt.copernicus.org/articles/15/2037/2022/</a>). NRT data are available on this website approximately 5 hours after the measurement.", unsafe_allow_html=True)
+    col12.markdown("<ul style='text-align: justify; font-size:13px'>Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
 
     
 
