@@ -37,9 +37,9 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 ##########################################################################################################################
-img1 = pil.Image.open('img1.png')
-col01, col02, col03 = st.columns([2,4,2])
-col02.image(img1, use_column_width=True)
+#img1 = pil.Image.open('img1.png')
+#col01, col02, col03 = st.columns([2,4,2])
+#col02.image(img1, use_column_width=True)
 
 
 over_theme = {'txc_inactive': '#000000'}
