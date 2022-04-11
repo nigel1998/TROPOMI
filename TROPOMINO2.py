@@ -37,7 +37,7 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 ##########################################################################################################################
-#img1 = pil.Image.open('img1.png')
+img1 = pil.Image.open('img1.png')
 #col01, col02, col03 = st.columns([2,4,2])
 #col02.image(img1, use_column_width=True)
 
@@ -57,7 +57,9 @@ app = hy.HydraApp(title='TROPOMINO2',
 @app.addapp(title='Daily TROPOMI NO2')
 def DailyTROPOMINO2():
     my_expander1 = st.expander('Daily TROPOMI NO2', expanded=True)
-    daily_input = my_expander1.selectbox('Select Location:', ['U.S.A.','California','Mid Atl', 'Mid West', 'North East', 'South East', 'Texas'], key='daily_input')
+    col01, col02, col03 = my_expander1.columns([3,3,3])
+    col03.image(img1, use_column_width=True)
+    daily_input = col01.selectbox('Select Location:', ['U.S.A.','California','Mid Atl', 'Mid West', 'North East', 'South East', 'Texas'], key='daily_input')
     if (daily_input=='U.S.A.'):
         col11, col12, col13 = my_expander1.columns([3,10,3])
         col11.markdown("")
@@ -161,7 +163,9 @@ def DailyTROPOMINO2():
 @app.addapp(title='Monthly TROPOMI NO2')
 def MonthlyTROPOMINO2():
     my_expander2 = st.expander('Monthly TROPOMI NO2', expanded=True)  
-    col21, col22, col23 = my_expander2.columns([1,7,1])
+    col01, col02, col03 = my_expander2.columns([3,3,3])
+    col03.image(img1, use_column_width=True)
+    #daily_input = col01.selectbox('Select Location:', ['U.S.A.','California','Mid Atl', 'Mid West', 'North East', 'South East', 'Texas'], key='daily_input')
 
 
 app.run()
