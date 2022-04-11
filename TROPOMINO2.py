@@ -3,7 +3,6 @@ import numpy as np
 import PIL as pil
 import streamlit as st
 import datetime
-import matplotlib.image as mpimg
 import plotly.express as px
 import plotly.graph_objects as go
 from streamlit.elements import layouts
