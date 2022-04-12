@@ -1,3 +1,4 @@
+from operator import index
 import pandas as pd
 import numpy as np
 import PIL as pil
@@ -59,7 +60,7 @@ def DailyTROPOMINO2():
     my_expander1 = st.expander('Daily TROPOMI NO2', expanded=True)
     col01, col02, col03 = my_expander1.columns([3,3,3])
     col03.image(img1, use_column_width=True)
-    daily_input = col01.selectbox('Select Location:', ['U.S.A.','California','Mid Atl', 'Mid West', 'North East', 'South East', 'Texas'], key='daily_input')
+    daily_input = col01.selectbox('Select Location:', ['U.S.A.','California','Mid Atlantic', 'Mid West', 'North East', 'South East', 'Texas'], key='daily_input')
     if (daily_input=='U.S.A.'):
         col11, col12, col13 = my_expander1.columns([3,10,3])
         col11.markdown("")
@@ -87,7 +88,7 @@ def DailyTROPOMINO2():
         img = pil.Image.open(file_stream)
         col12.image(img, use_column_width= True, caption = f"TROPOMI NO2 {daily_input} {date}")
 
-    elif (daily_input=='Mid Atl'):
+    elif (daily_input=='Mid Atlantic'):
         col11, col12, col13 = my_expander1.columns([3,7,3])
         col11.markdown("")
         col11.markdown("")
@@ -153,10 +154,8 @@ def DailyTROPOMINO2():
         file_stream = response['Body']
         img = pil.Image.open(file_stream)
         col12.image(img, use_column_width= True, caption = f"TROPOMI NO2 {daily_input} {date}")
-    col12.markdown("<ul style='text-align: justify; font-size:13px'>The <a href= 'tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the Air Climate and Health Lab at the Milken Institute School of Public Health at George Washington University (<a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>https://blogs.gwu.edu/sanenberg/</a>), and is not directly affiliated with Tropomi Science Team.", unsafe_allow_html=True)
-    col12.markdown("<ul style='text-align: justify; font-size:13px'>Data shown on the website are tropospheric vertical column amounts. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by KNMI (<a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>https://amt.copernicus.org/articles/15/2037/2022/</a>). NRT data are available on this website approximately 5 hours after the measurement.", unsafe_allow_html=True)
-    col12.markdown("<ul style='text-align: justify; font-size:13px'>Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
-
+    col12.markdown("<ul style='text-align: justify; font-size:13px'>The <a href= 'tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the <a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>Air Climate and Health Lab</a> at the Milken Institute School of Public Health at George Washington University, and is not directly affiliated with Tropomi Science Team. Data shown on the website are tropospheric vertical column amounts. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by <a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>KNMI</a>. NRT data are available on this website approximately 5 hours after the measurement. Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
+    
     
 
 
@@ -165,12 +164,52 @@ def DailyTROPOMINO2():
 
 @app.addapp(title='Monthly TROPOMI NO2')
 def MonthlyTROPOMINO2():
+
+    def monthnumber(string):
+        m = {
+            'jan': 1,
+            'feb': 2,
+            'mar': 3,
+            'apr':4,
+            'may':5,
+            'jun':6,
+            'jul':7,
+            'aug':8,
+            'sep':9,
+            'oct':10,
+            'nov':11,
+            'dec':12
+            }
+        s = string.strip()[:3].lower()
+        return m[s]
+
     my_expander2 = st.expander('Monthly TROPOMI NO2', expanded=True)  
     col01, col02, col03 = my_expander2.columns([3,3,3])
     col03.image(img1, use_column_width=True)
-    #daily_input = col01.selectbox('Select Location:', ['U.S.A.','California','Mid Atl', 'Mid West', 'North East', 'South East', 'Texas'], key='daily_input')
+    years = ['2019','2020','2021','2022']
+    default = years.index(datetime.datetime.now().strftime("%Y"))
+    year_input = col01.selectbox('Select Year:', years, key='year_input', index=default)
+    if year_input:
+        months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+        default = months.index((datetime.datetime.now() - datetime.timedelta(days=15)).strftime("%B"))
+        month_input = col01.selectbox('Select Month:', months, key='month_input', index=default)
+        if month_input:
+            col11, col12, col13 = my_expander2.columns([3,8,3])
+            try:
+                date = datetime.datetime.strptime(month_input, "%B")
+                object = bucket.Object(f"monthly/{date.strftime('%m')}{year_input}_TROPOMI_QA75.png")
+                response = object.get()
+                file_stream = response['Body']
+                img = pil.Image.open(file_stream)
+                col12.image(img, use_column_width= True, caption = f"TROPOMI NO2 {month_input}, {year_input}")
+                
+            except:
+                col12.text("")
+                col12.text("")
+                col12.text("")
+                col12.markdown("<ul style='text-align: justify; font-size:25px'>Data not yet available.", unsafe_allow_html=True)
 
-
+        col12.markdown("<ul style='text-align: justify; font-size:13px'>The <a href= 'tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the <a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>Air Climate and Health Lab</a> at the Milken Institute School of Public Health at George Washington University, and is not directly affiliated with Tropomi Science Team. Data shown on the website are tropospheric vertical column amounts. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by <a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>KNMI</a>. NRT data are available on this website approximately 5 hours after the measurement. Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
 app.run()
 
 
