@@ -154,7 +154,6 @@ def DailyTROPOMINO2():
         file_stream = response['Body']
         img = pil.Image.open(file_stream)
         col12.image(img, use_column_width= True, caption = f"TROPOMI NO2 {daily_input} {date}")
-    col12.markdown("<ul style='text-align: justify; font-size:13px'>The <a href= 'tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the <a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>Air Climate and Health Lab</a> at the Milken Institute School of Public Health at George Washington University, and is not directly affiliated with Tropomi Science Team. Data shown on the website are tropospheric vertical column amounts. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by <a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>KNMI</a>. NRT data are available on this website approximately 5 hours after the measurement. Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
     
     
 
@@ -191,7 +190,7 @@ def MonthlyTROPOMINO2():
     year_input = col01.selectbox('Select Year:', years, key='year_input', index=default)
     if year_input:
         months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-        default = months.index((datetime.datetime.now() - datetime.timedelta(days=15)).strftime("%B"))
+        default = months.index((datetime.datetime.now() - datetime.timedelta(days=20)).strftime("%B"))
         month_input = col01.selectbox('Select Month:', months, key='month_input', index=default)
         if month_input:
             col11, col12, col13 = my_expander2.columns([3,8,3])
@@ -209,7 +208,15 @@ def MonthlyTROPOMINO2():
                 col12.text("")
                 col12.markdown("<ul style='text-align: justify; font-size:25px'>Data not yet available.", unsafe_allow_html=True)
 
-        col12.markdown("<ul style='text-align: justify; font-size:13px'>The <a href= 'tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the <a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>Air Climate and Health Lab</a> at the Milken Institute School of Public Health at George Washington University, and is not directly affiliated with Tropomi Science Team. Data shown on the website are tropospheric vertical column amounts. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by <a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>KNMI</a>. NRT data are available on this website approximately 5 hours after the measurement. Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
+
+@app.addapp(title='About')
+def About():
+    my_expander3 = st.expander('About', expanded=True)
+    col01, col02, col03 = my_expander3.columns([3,3,3])
+    col03.image(img1, use_column_width=True)
+    my_expander3.markdown("<h3 style='text-align: left; font-weight: bold '>More Information:</h1>", unsafe_allow_html=True)
+    my_expander3.markdown("<ul style='text-align: justify'>The <a href= 'https://tropomino2.us', target='_blank'>tropomino2.us</a> web site is maintained by the <a href= 'https://blogs.gwu.edu/sanenberg/', target='_blank'>Air Climate and Health Lab</a> at the Milken Institute School of Public Health at George Washington University, and is not directly affiliated with Tropomi Science Team. Data shown on the website are tropospheric vertical column amounts, are filtered to show measurements with a quality assurance flag exceeding 0.75, and are re-gridded using a methodology described in <a href= 'https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020EF001665', target='_blank'>Goldberg et al. 2021</a>. Daily images are from the near-real-time (NRT) product and the monthly data are from the offline (OFFL) product. Data shown here are from the Version 2.2 and 2.3.1 NO2 algorithms developed by <a href= 'https://amt.copernicus.org/articles/15/2037/2022/', target='_blank'>KNMI</a>. NRT data are available on this website approximately 5 hours after the measurement. Tropomi NO2 can be downloaded from: <a href= 'http://www.tropomi.eu/data-products/nitrogen-dioxide', target='_blank'>http://www.tropomi.eu/data-products/nitrogen-dioxide</a>", unsafe_allow_html=True)
+
 app.run()
 
 
